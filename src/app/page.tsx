@@ -1,65 +1,97 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { setToken, getToken, clearToken } from "@/lib/auth";
+
+const links = [
+  { href: "/create", label: "파티 생성" },
+  { href: "/join/demo-party-id", label: "파티 참여 (예시 ID)" },
+  { href: "/party/demo-party-id", label: "파티 상태 / 매칭" },
+  { href: "/match-result", label: "매칭 결과" },
+];
 
 export default function Home() {
+  const [tokenInput, setTokenInput] = useState("");
+  const [currentToken, setCurrentToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCurrentToken(getToken());
+  }, []);
+
+  const handleSave = () => {
+    setToken(tokenInput.trim());
+    setCurrentToken(tokenInput.trim());
+    setTokenInput("");
+  };
+
+  const handleClear = () => {
+    clearToken();
+    setCurrentToken(null);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-10 px-6 py-16">
+      <section className="rounded-3xl border border-white/10 bg-surface px-8 py-10 shadow-2xl shadow-black/40">
+        <p className="text-sm text-muted">마니또 / Next.js</p>
+        <h1 className="mt-2 text-3xl font-semibold leading-9">
+          빠른 마이그레이션용 스켈레톤
+        </h1>
+        <p className="mt-4 max-w-3xl text-muted">
+          백엔드 베이스 URL, 인증 토큰은 환경변수/토큰 입력으로 주입하세요.
+          하단 링크는 주요 플로우로 이어집니다.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              className="rounded-full border border-white/10 bg-surface-2 px-4 py-2 text-sm font-medium transition hover:border-accent hover:text-accent"
+              href={link.href}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-white/10 bg-surface px-6 py-6">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm text-muted">현재 토큰</p>
+              <p className="mt-1 text-sm font-mono text-foreground">
+                {currentToken ? `${currentToken.slice(0, 20)}...` : "없음"}
+              </p>
+            </div>
+            <button
+              onClick={handleClear}
+              className="rounded-full border border-white/10 px-3 py-1 text-xs text-muted transition hover:border-accent hover:text-accent"
             >
-              Learning
-            </a>{" "}
-            center.
+              토큰 초기화
+            </button>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm text-muted">토큰 붙여넣기</label>
+            <textarea
+              className="w-full rounded-lg border border-white/10 bg-surface-2 px-3 py-2 text-sm outline-none transition focus:border-accent"
+              rows={2}
+              placeholder="JWT 또는 API 토큰을 입력"
+              value={tokenInput}
+              onChange={(e) => setTokenInput(e.target.value)}
+            />
+            <button
+              onClick={handleSave}
+              className="w-fit rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
+            >
+              토큰 저장
+            </button>
+          </div>
+          <p className="text-xs text-muted">
+            토큰은 로컬스토리지에만 저장됩니다. 인증/로그인은 추후 NextAuth 또는
+            OAuth 버튼으로 교체하세요.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
