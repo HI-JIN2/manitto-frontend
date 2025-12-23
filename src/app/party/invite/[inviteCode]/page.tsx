@@ -11,8 +11,15 @@ type Participant = {
   displayName: string;
 };
 
-export default function PartyStatusPage() {
-  const { partyId } = useParams<{ partyId: string }>();
+type PartyDetail = {
+  id: number;
+  name: string;
+};
+
+export default function PartyStatusByInvitePage() {
+  const { inviteCode } = useParams<{ inviteCode: string }>();
+  const [partyId, setPartyId] = useState<number | null>(null);
+  const [partyName, setPartyName] = useState<string>("");
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [isMatched, setIsMatched] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -25,15 +32,18 @@ export default function PartyStatusPage() {
   const [dialogMessage, setDialogMessage] = useState<string | null>(null);
   const [matching, setMatching] = useState(false);
 
-  const loadData = async () => {
+  const loadData = async (resolvedPartyId?: number) => {
     try {
+      const currentPartyId = resolvedPartyId ?? partyId;
+      if (!currentPartyId) return;
+
       const people = await apiFetch<Participant[]>(
-        `/parties/${partyId}/participants`,
+        `/parties/${currentPartyId}/participants`,
       );
       setParticipants(people);
 
       const status = await apiFetch<{ matched: boolean }>(
-        `/parties/${partyId}/status`,
+        `/parties/${currentPartyId}/status`,
       );
       setIsMatched(status.matched);
     } catch (err: unknown) {
@@ -48,11 +58,30 @@ export default function PartyStatusPage() {
   };
 
   useEffect(() => {
-    loadData();
+    const load = async () => {
+      try {
+        const party = await apiFetch<PartyDetail & { isMatched: boolean }>(
+          `/parties/invite/${inviteCode}`,
+        );
+        setPartyId(party.id);
+        setPartyName(party.name);
+        setIsMatched(party.isMatched);
+        await loadData(party.id);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setDialogMessage(err.message);
+        } else {
+          setDialogMessage("파티 정보를 불러올 수 없습니다.");
+        }
+        setLoading(false);
+      }
+    };
+    load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [partyId]);
+  }, [inviteCode]);
 
   const handleMatch = async () => {
+    if (!partyId) return;
     if (matching) return;
     setMessage(null);
     try {
@@ -73,6 +102,7 @@ export default function PartyStatusPage() {
 
   const handleAddGuest = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!partyId) return;
     setMessage(null);
     setSaving(true);
     try {
@@ -85,7 +115,7 @@ export default function PartyStatusPage() {
       });
       setNewName("");
       setNewEmail("");
-      await loadData();
+      await loadData(partyId);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setDialogMessage(err.message);
@@ -98,6 +128,7 @@ export default function PartyStatusPage() {
   };
 
   const handleDelete = async (id: number) => {
+    if (!partyId) return;
     setMessage(null);
     setDeletingId(id);
     try {
@@ -124,12 +155,22 @@ export default function PartyStatusPage() {
     );
   }
 
+  if (!partyId) {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-3xl flex-col px-6 py-12">
+        <p className="text-sm text-muted">유효하지 않은 초대코드입니다.</p>
+      </main>
+    );
+  }
+
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-6 py-12">
       <header className="space-y-2">
-        <h1 className="text-3xl font-semibold">파티 상태</h1>
+        <h1 className="text-3xl font-semibold">
+          파티 상태 · {partyName || "마니또 파티"}
+        </h1>
         <p className="text-sm text-muted">
-          참여자 목록을 확인하고 매칭을 실행하세요. 매칭 완료 후 재실행은 불가할 수 있습니다.
+          초대코드 기준으로 파티 상태를 확인합니다. 참여자 목록을 보고 매칭을 실행할 수 있습니다.
         </p>
       </header>
 
@@ -205,7 +246,7 @@ export default function PartyStatusPage() {
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-muted">
-              모든 파티원이 추가되었다면, 이제 매칭을 시작해 보세요.
+              초대할 사람들을 모두 추가한 뒤, 매칭을 실행해 보세요.
             </p>
             <button
               onClick={handleMatch}
@@ -231,4 +272,5 @@ export default function PartyStatusPage() {
     </main>
   );
 }
+
 

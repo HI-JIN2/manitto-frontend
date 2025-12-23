@@ -16,8 +16,12 @@ export default function MatchResultPage() {
     try {
       const res = await apiFetch<MatchResponse>("/parties/match/result");
       setResult(res.receiver);
-    } catch (err: any) {
-      setStatus(err.message ?? "결과 조회 실패");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setStatus(err.message);
+      } else {
+        setStatus("결과 조회 실패");
+      }
     } finally {
       setLoading(false);
     }
@@ -26,14 +30,13 @@ export default function MatchResultPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-6 py-12">
       <header className="space-y-2">
-        <p className="text-sm text-muted">/match-result</p>
-        <h1 className="text-2xl font-semibold">내 마니또</h1>
+        <h1 className="text-3xl font-semibold">내 마니또</h1>
         <p className="text-sm text-muted">
           매칭 완료 후 결과를 조회합니다. 토큰을 먼저 설정하세요.
         </p>
       </header>
 
-      <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6">
+      <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
         <button
           onClick={fetchResult}
           disabled={loading}

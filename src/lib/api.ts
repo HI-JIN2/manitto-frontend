@@ -1,6 +1,6 @@
 import { getToken } from "@/lib/auth";
 
-type HttpMethod = "GET" | "POST";
+type HttpMethod = "GET" | "POST" | "DELETE";
 
 type RequestOptions = {
   method?: HttpMethod;
@@ -30,13 +30,37 @@ export async function apiFetch<T>(
     cache: "no-store",
   });
 
+  const text = await res.text();
+
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(
-      `API ${method} ${path} failed (${res.status}): ${text || "Unknown error"}`,
-    );
+    let friendly = "요청을 처리하는 중 오류가 발생했습니다.";
+
+    if (text) {
+      try {
+        const data = JSON.parse(text) as any;
+        if (data && typeof data.error === "string") {
+          friendly = data.error;
+        } else {
+          friendly = text;
+        }
+      } catch {
+        friendly = text;
+      }
+    }
+
+    throw new Error(friendly);
   }
 
-  return res.json() as Promise<T>;
+  if (!text) {
+    // No content (e.g., 204)
+    return undefined as T;
+  }
+
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    // Non-JSON body
+    return undefined as T;
+  }
 }
 
