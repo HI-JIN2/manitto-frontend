@@ -32,13 +32,13 @@ export default function RootLayout({
         <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#0b1021] via-[#0d1328] to-[#0b1021]">
           <Snow />
           <header className="border-b border-white/5 bg-surface/60 backdrop-blur">
-            <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+            <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 gap-3">
               <Link href="/" className="flex items-center gap-2 font-semibold">
-                <div className="h-9 w-9 rounded-2xl bg-accent/20 ring-1 ring-accent/30" />
-                <p className="text-base text-foreground">마니또 파티</p>
+                <div className="h-8 w-8 rounded-2xl bg-accent/20 ring-1 ring-accent/30 sm:h-9 sm:w-9" />
+                <p className="text-sm text-foreground sm:text-base">마니또 파티</p>
               </Link>
-              <div className="flex items-center gap-4">
-                <nav className="flex items-center gap-3 text-sm text-muted">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <nav className="hidden items-center gap-3 text-xs text-muted sm:flex sm:text-sm">
                   <a className="rounded-full px-3 py-2 transition hover:text-foreground" href="/">
                     홈
                   </a>
@@ -58,13 +58,13 @@ export default function RootLayout({
                     파티 상태
                   </a>
                 </nav>
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-100">
+                <div className="flex items-center gap-2 text-xs sm:text-[11px]">
+                  <span className="hidden rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 font-semibold text-emerald-100 sm:inline">
                     게스트 모드
                   </span>
                   <a
                     href="/auth"
-                    className="rounded-full border border-white/10 px-3 py-2 text-xs font-semibold text-foreground transition hover:border-accent hover:text-accent"
+                    className="rounded-full border border-white/10 px-3 py-1.5 font-semibold text-foreground transition hover:border-accent hover:text-accent"
                   >
                     로그인
                   </a>
@@ -72,8 +72,10 @@ export default function RootLayout({
               </div>
             </div>
           </header>
-          <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
-          <footer className="border-t border-white/5 bg-surface/60 px-6 py-6 text-center text-xs text-muted">
+          <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+            {children}
+          </main>
+          <footer className="border-t border-white/5 bg-surface/60 px-4 py-4 text-center text-[10px] text-muted sm:px-6 sm:py-6 sm:text-xs">
             © 2025 마니또 파티. All rights reserved.
           </footer>
         </div>
