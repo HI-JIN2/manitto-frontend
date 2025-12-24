@@ -31,7 +31,14 @@ function AuthContent() {
       ? `${window.location.origin}/auth/google/redirect`
       : "";
     
-    const backendAuthUrl = `${baseUrl}/api/auth/google?redirect_uri=${encodeURIComponent(frontendRedirectUri)}`;
+    // baseUrl 정규화: /api로 끝나면 제거, 그렇지 않으면 그대로 사용
+    // 예: http://localhost:8080/api -> http://localhost:8080
+    // 예: http://localhost:8080 -> http://localhost:8080
+    const normalizedBaseUrl = baseUrl.endsWith("/api") 
+      ? baseUrl.slice(0, -4) 
+      : baseUrl.replace(/\/api$/, "");
+    
+    const backendAuthUrl = `${normalizedBaseUrl}/api/auth/google?redirect_uri=${encodeURIComponent(frontendRedirectUri)}`;
     
     // 백엔드로 리다이렉트
     window.location.href = backendAuthUrl;
