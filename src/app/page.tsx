@@ -38,33 +38,37 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <div className="flex-1">
               <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
-                로그인 없이 1분 만에
+                로그인 없이 1분 이면 
                 <br />
                 우리 팀만의 마니또 파티 만들기.
               </h1>
             </div>
           <div className="max-w-3xl space-y-1 text-base text-muted sm:text-lg">
-            <p>초간단 게스트 모드로 바로 시작하세요. 계정 없이도 파티를 만들 수 있어요.</p>
-            <p>파티를 만든 뒤 초대 링크만 공유하면, 팀원들은 이름과 이메일만으로 참여합니다.</p>
-            <p>이메일을 미리 알고 있다면 일괄 입력도 가능해서, 준비 시간이 훨씬 줄어듭니다.</p>
+            <p>복잡한 가입 없이 게스트 모드로 바로 시작하세요. 계정 없이도 파티를 만들 수 있어요.</p>
+            <p>파티를 만든 뒤 초대 링크만 공유하면, 팀원들은 이름과 이메일만으로 가볍게 참여할 수 있어요.</p>
+            <p>이메일을 미리 알고 있다면 한 번에 입력할 수도 있어서 파티를 준비하는 시간이 훨씬 줄어들어요..</p>
           </div>
 
           {stats && (
             <div className="mt-3 space-y-1 text-xs text-muted sm:text-sm">
               <p>
-                지금까지 이 서비스에서{" "}
+                지금까지 {" "}
                 <span className="font-semibold text-foreground">
                   {stats.partyCount}
                 </span>
-                번째 마니또 파티까지 만들어졌어요.
+                개의 마니또 파티가 만들어졌어요.
               </p>
               <p>
                 현재{" "}
                 <span className="font-semibold text-foreground">
                   {stats.participantCount}
                 </span>
-                명의 사람들이 마니또 파티를 사용하고 있어요.
+                명의 사람들이 마니또 파티를 함께하고 있어요.
               </p>
+              <p>              
+                조용하지만 따뜻한 파티,
+                지금 바로 시작해 보세요. 🎁
+                </p>
             </div>
           )}
 
