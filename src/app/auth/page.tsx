@@ -20,28 +20,16 @@ function AuthContent() {
   }, [searchParams]);
 
   const handleGoogleLogin = () => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    if (!baseUrl) {
-      setDialogMessage("API 서버 URL이 설정되지 않았습니다.");
-      return;
-    }
-
-    // 백엔드로 리다이렉트 (프론트엔드 리다이렉트 URI 전달)
+    // 프론트엔드 리다이렉트 URI
     const frontendRedirectUri = typeof window !== "undefined"
       ? `${window.location.origin}/auth/google/redirect`
       : "";
     
-    // baseUrl 정규화: /api로 끝나면 제거, 그렇지 않으면 그대로 사용
-    // 예: http://localhost:8080/api -> http://localhost:8080
-    // 예: http://localhost:8080 -> http://localhost:8080
-    const normalizedBaseUrl = baseUrl.endsWith("/api") 
-      ? baseUrl.slice(0, -4) 
-      : baseUrl.replace(/\/api$/, "");
+    // Next.js API Route를 통해 백엔드로 프록시 (Mixed Content 방지)
+    const proxyUrl = `/api/auth/google?redirect_uri=${encodeURIComponent(frontendRedirectUri)}`;
     
-    const backendAuthUrl = `${normalizedBaseUrl}/api/auth/google?redirect_uri=${encodeURIComponent(frontendRedirectUri)}`;
-    
-    // 백엔드로 리다이렉트
-    window.location.href = backendAuthUrl;
+    // Next.js API Route로 리다이렉트 (서버 사이드에서 백엔드로 프록시)
+    window.location.href = proxyUrl;
   };
 
   return (
