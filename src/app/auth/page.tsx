@@ -1,58 +1,45 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { apiFetch } from "@/lib/api";
-import { setToken } from "@/lib/auth";
+import { useSearchParams } from "next/navigation";
 import { ErrorDialog } from "@/components/ErrorDialog";
 
 function AuthContent() {
   const [dialogMessage, setDialogMessage] = useState<string | null>(null);
-  const router = useRouter();
   const searchParams = useSearchParams();
 
-  // URL 파라미터에서 에러 확인
+  // URL 파라미터에서 에러 확인 (향후 로그인 도입 대비)
   useEffect(() => {
     const error = searchParams.get("error");
     if (error) {
-      setDialogMessage(`로그인 오류: ${error}`);
+      setDialogMessage("로그인 기능은 현재 준비 중입니다.");
     }
   }, [searchParams]);
 
-  const handleGoogleLogin = () => {
-    // 프론트엔드 리다이렉트 URI
-    const frontendRedirectUri = typeof window !== "undefined"
-      ? `${window.location.origin}/auth/google/redirect`
-      : "";
-    
-    // Next.js API Route를 통해 백엔드로 프록시 (Mixed Content 방지)
-    const proxyUrl = `/api/auth/google?redirect_uri=${encodeURIComponent(frontendRedirectUri)}`;
-    
-    // Next.js API Route로 리다이렉트 (서버 사이드에서 백엔드로 프록시)
-    window.location.href = proxyUrl;
-  };
-
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-6 py-12">
+      {/* 헤더 */}
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">로그인</h1>
         <p className="text-sm text-muted">
-          기본은 게스트 모드입니다. 필요하다면 Google 계정으로 로그인해, 참여
-          이력을 계정에 연결할 수 있어요.
+          현재는 로그인 없이 게스트 모드로만 이용할 수 있어요.
+          로그인 기능은 준비 중입니다.
         </p>
       </header>
 
+      {/* Google 로그인 (준비 중) */}
       <section className="space-y-4 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
-        <h2 className="text-lg font-semibold">Google 로그인</h2>
+        <h2 className="text-lg font-semibold">Google 로그인 (준비 중)</h2>
         <p className="text-sm text-muted">
-          이 이메일 주소로 참여한 마니또 파티를 한 번에 관리하고 싶다면 Google
-          로그인으로 계정을 만들어 두세요.
+          참여한 마니또 파티를 계정으로 한 번에 관리할 수 있는
+          로그인 기능을 준비하고 있어요.
         </p>
+
         <button
-          onClick={handleGoogleLogin}
-          className="flex items-center justify-center gap-3 rounded-full border border-white/10 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-100"
+          disabled
+          className="flex cursor-not-allowed items-center justify-center gap-3 rounded-full border border-white/10 bg-white/50 px-4 py-2.5 text-sm font-semibold text-gray-400"
         >
-          <svg className="h-5 w-5" viewBox="0 0 24 24">
+          <svg className="h-5 w-5 opacity-40" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -72,17 +59,18 @@ function AuthContent() {
           </svg>
           Google 계정으로 로그인
         </button>
+
         <p className="text-xs text-muted">
-          로그인은 선택 사항입니다. 로그인하지 않아도 게스트 모드로 파티 생성과 참여가
-          모두 가능합니다.
+          현재는 로그인 없이도 모든 기능을 이용할 수 있어요.
         </p>
       </section>
 
+      {/* 게스트 모드 안내 */}
       <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
-        <h2 className="text-lg font-semibold">게스트 모드 안내</h2>
+        <h2 className="text-lg font-semibold">게스트 모드</h2>
         <p className="text-sm text-muted">
-          로그인 없이도 파티 생성과 참여가 가능합니다. 계정은 참여 이력을 모아 보고
-          싶을 때만 선택적으로 사용하면 됩니다.
+          로그인 없이 파티 생성과 참여가 가능합니다.
+          지금은 게스트 모드로 모든 기능을 이용할 수 있어요.
         </p>
       </section>
 
@@ -97,16 +85,17 @@ function AuthContent() {
 
 export default function AuthPage() {
   return (
-    <Suspense fallback={
-      <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-6 py-12">
-        <header className="space-y-2">
-          <h1 className="text-3xl font-semibold">로그인</h1>
-          <p className="text-sm text-muted">로딩 중...</p>
-        </header>
-      </main>
-    }>
+    <Suspense
+      fallback={
+        <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-6 py-12">
+          <header className="space-y-2">
+            <h1 className="text-3xl font-semibold">로그인</h1>
+            <p className="text-sm text-muted">불러오는 중...</p>
+          </header>
+        </main>
+      }
+    >
       <AuthContent />
     </Suspense>
   );
 }
-

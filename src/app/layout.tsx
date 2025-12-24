@@ -87,12 +87,12 @@ export default function RootLayout({
                   <span className="hidden rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 font-semibold text-emerald-100 sm:inline">
                     게스트 모드
                   </span>
-                  <a
+                  {/* <a
                     href="/auth"
                     className="rounded-full border border-white/10 px-3 py-1.5 font-semibold text-foreground transition hover:border-accent hover:text-accent"
                   >
                     로그인
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
