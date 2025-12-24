@@ -18,6 +18,7 @@ type PartyDetail = {
 
 export default function PartyStatusByInvitePage() {
   const { inviteCode } = useParams<{ inviteCode: string }>();
+  const maxParticipants = 30;
   const [partyId, setPartyId] = useState<number | null>(null);
   const [partyName, setPartyName] = useState<string>("");
   const [participants, setParticipants] = useState<Participant[]>([]);
@@ -105,6 +106,10 @@ export default function PartyStatusByInvitePage() {
   const handleAddGuest = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!partyId) return;
+    if (participants.length >= maxParticipants) {
+      setDialogMessage(`참여자는 최대 ${maxParticipants}명까지만 추가할 수 있습니다.`);
+      return;
+    }
     setMessage(null);
     setSaving(true);
     try {
@@ -223,6 +228,11 @@ export default function PartyStatusByInvitePage() {
             명이 참여 중입니다.
           </p>
         </div>
+        {participants.length >= maxParticipants && (
+          <p className="text-xs text-red-200">
+            참여자는 최대 {maxParticipants}명까지만 추가할 수 있어요.
+          </p>
+        )}
         {participants.length === 0 ? (
           <p className="text-sm text-muted">아직 참가자가 없어요.</p>
         ) : (
@@ -269,7 +279,7 @@ export default function PartyStatusByInvitePage() {
           </div>
           <button
             type="submit"
-            disabled={saving}
+            disabled={saving || participants.length >= maxParticipants}
             className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
           >
             {saving ? "추가 중..." : "참여자 추가"}
@@ -369,5 +379,4 @@ export default function PartyStatusByInvitePage() {
     </main>
   );
 }
-
 
