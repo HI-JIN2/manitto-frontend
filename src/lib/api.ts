@@ -19,7 +19,12 @@ export async function apiFetch<T>(
 
   const token = getToken();
 
-  const res = await fetch(`${baseUrl}${path}`, {
+  // 프로덕션에서 HTTP 백엔드인 경우 Vercel rewrites 프록시 사용
+  const isProduction = process.env.NODE_ENV === "production";
+  const useProxy = isProduction && baseUrl.startsWith("http://");
+  const apiUrl = useProxy ? `/api${path}` : `${baseUrl}${path}`;
+
+  const res = await fetch(apiUrl, {
     method,
     headers: {
       "Content-Type": "application/json",
