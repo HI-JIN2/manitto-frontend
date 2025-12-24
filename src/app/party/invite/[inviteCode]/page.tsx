@@ -271,6 +271,31 @@ ${inviteLink}
         </form>
       </section>
 
+      <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
+        <h2 className="text-lg font-semibold">매칭 상태</h2>
+        {isMatched ? (
+          <p className="text-sm text-green-300">🎁 매칭 완료된 파티입니다.</p>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-sm text-muted">
+              초대할 사람들을 모두 추가한 뒤, 매칭을 실행해 보세요.
+            </p>
+            <button
+              onClick={handleMatch}
+              disabled={matching}
+              className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
+            >
+              {matching ? "매칭 중..." : "매칭 시작"}
+            </button>
+          </div>
+        )}
+        {message && (
+          <p className="text-sm text-muted">
+            {message}
+          </p>
+        )}
+      </section>
+      
       {inviteCode && (
         <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
           <h2 className="text-lg font-semibold">초대 링크</h2>
@@ -321,30 +346,6 @@ ${inviteLink}
         </section>
       )}
 
-      <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
-        <h2 className="text-lg font-semibold">매칭 상태</h2>
-        {isMatched ? (
-          <p className="text-sm text-green-300">🎁 매칭 완료된 파티입니다.</p>
-        ) : (
-          <div className="space-y-3">
-            <p className="text-sm text-muted">
-              초대할 사람들을 모두 추가한 뒤, 매칭을 실행해 보세요.
-            </p>
-            <button
-              onClick={handleMatch}
-              disabled={matching}
-              className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
-            >
-              {matching ? "매칭 중..." : "매칭 시작"}
-            </button>
-          </div>
-        )}
-        {message && (
-          <p className="text-sm text-muted">
-            {message}
-          </p>
-        )}
-      </section>
 
       <ErrorDialog
         open={dialogMessage !== null}
