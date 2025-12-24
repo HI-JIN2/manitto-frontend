@@ -19,10 +19,8 @@ export async function apiFetch<T>(
 
   const token = getToken();
 
-  // 프로덕션에서 HTTP 백엔드인 경우 Next.js API Route 프록시 사용
-  const isProduction = typeof window !== "undefined" && window.location.protocol === "https:";
-  const useProxy = isProduction && baseUrl.startsWith("http://");
-  const apiUrl = useProxy ? `/api${path}` : `${baseUrl}${path}`;
+  // 프록시 제거: 직접 백엔드로 요청 (임시 - 인증서 발급 대기 중)
+  const apiUrl = `${baseUrl}${path}`;
 
   const res = await fetch(apiUrl, {
     method,

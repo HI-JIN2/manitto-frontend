@@ -73,11 +73,19 @@ async function proxyRequest(
 
   try {
     console.log(`[Proxy] ${method} ${url.toString()}`);
+    
+    // AbortController로 타임아웃 설정 (10초)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    
     const res = await fetch(url.toString(), {
       method,
       headers,
       body,
+      signal: controller.signal,
     });
+    
+    clearTimeout(timeoutId);
 
     const text = await res.text();
     const response = new NextResponse(text, {
@@ -103,8 +111,17 @@ async function proxyRequest(
     console.error("[Proxy] Error:", error);
     console.error("[Proxy] Backend URL:", BACKEND_URL);
     console.error("[Proxy] Path:", path);
+    
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const isConnectionError = errorMessage.includes("ECONNREFUSED") || errorMessage.includes("fetch failed");
+    
     return NextResponse.json(
-      { error: `백엔드 서버에 연결할 수 없습니다: ${error instanceof Error ? error.message : String(error)}` },
+      { 
+        error: isConnectionError 
+          ? "백엔드 서버에 연결할 수 없습니다. NCP ACG 설정을 확인해주세요." 
+          : `백엔드 서버 오류: ${errorMessage}`,
+        details: process.env.NODE_ENV === "development" ? errorMessage : undefined,
+      },
       { status: 502 },
     );
   }
