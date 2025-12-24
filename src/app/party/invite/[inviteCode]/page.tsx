@@ -89,7 +89,7 @@ export default function PartyStatusByInvitePage() {
     try {
       setMatching(true);
       await apiFetch(`/parties/${partyId}/match`, { method: "POST" });
-      setMessage("매칭 완료! 이메일이 발송되었을 수 있습니다.");
+      setMessage("매칭 완료! 이메일을 확인해보세요.");
       setIsMatched(true);
     } catch (err: unknown) {
       if (err instanceof Error) {
