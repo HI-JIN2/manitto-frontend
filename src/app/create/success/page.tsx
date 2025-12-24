@@ -1,20 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { CreateSuccessClient } from "./success-client";
 
-type PageProps = {
-  searchParams: {
-    partyId?: string;
-    inviteCode?: string;
-    name?: string;
-  };
-};
-
-export default function CreateSuccessPage({ searchParams }: PageProps) {
-  // searchParams가 Promise인 경우 처리 (Next.js 15+)
-  const partyId = typeof searchParams.partyId === "string" ? searchParams.partyId : "";
-  const inviteCode = typeof searchParams.inviteCode === "string" ? searchParams.inviteCode : "";
-  const name = typeof searchParams.name === "string" ? searchParams.name : "";
+function CreateSuccessContent() {
+  const searchParams = useSearchParams();
+  const partyId = searchParams.get("partyId") ?? "";
+  const inviteCode = searchParams.get("inviteCode") ?? "";
+  const name = searchParams.get("name") ?? "";
 
   if (!partyId) {
     return (
@@ -31,9 +26,13 @@ export default function CreateSuccessPage({ searchParams }: PageProps) {
     );
   }
 
+  return <CreateSuccessClient partyId={partyId} inviteCode={inviteCode} name={name} />;
+}
+
+export default function CreateSuccessPage() {
   return (
     <Suspense>
-      <CreateSuccessClient partyId={partyId} inviteCode={inviteCode} name={name} />
+      <CreateSuccessContent />
     </Suspense>
   );
 }
