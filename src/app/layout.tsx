@@ -54,33 +54,33 @@ export default function RootLayout({
                 </div>
                 <p className="text-sm text-foreground sm:text-base">마니또 파티</p>
               </Link>
-              <div className="flex items-center gap-3 sm:gap-4">
-                <nav className="hidden items-center gap-3 text-xs text-muted sm:flex sm:text-sm">
-                  <a className="rounded-full px-3 py-2 transition hover:text-foreground" href="/">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <nav className="flex items-center gap-1.5 text-[10px] text-muted sm:gap-3 sm:text-xs md:text-sm">
+                  <a className="rounded-full px-2 py-1.5 transition hover:text-foreground sm:px-3 sm:py-2" href="/">
                     홈
                   </a>
-                  <a className="rounded-full px-3 py-2 transition hover:text-foreground" href="/create">
-                    파티 생성
+                  <a className="rounded-full px-2 py-1.5 transition hover:text-foreground sm:px-3 sm:py-2" href="/create">
+                    생성
                   </a>
                   <a
-                    className="rounded-full px-3 py-2 transition hover:text-foreground"
+                    className="rounded-full px-2 py-1.5 transition hover:text-foreground sm:px-3 sm:py-2"
                     href="/join"
                   >
-                    파티 참여
+                    참여
                   </a>
                   <a
-                    className="rounded-full px-3 py-2 transition hover:text-foreground"
+                    className="rounded-full px-2 py-1.5 transition hover:text-foreground sm:px-3 sm:py-2"
                     href="/party/invite"
                   >
-                    파티 상태
+                    상태
                   </a>
                   <a
-                    className="rounded-full px-3 py-2 transition hover:text-foreground"
+                    className="rounded-full px-2 py-1.5 transition hover:text-foreground sm:px-3 sm:py-2"
                     href="https://forms.gle/5treLCiYW9wb3Mx58"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    의견 보내기
+                    의견
                   </a>
                 </nav>
                 <div className="flex items-center gap-2 text-xs sm:text-[11px]">

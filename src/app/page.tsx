@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-8">
       <div className="relative overflow-visible">
-        {/* 펭귄 캐릭터 - 카드 오른쪽에서 왼쪽으로 20px 이동 */}
+        {/* 펭귄 캐릭터 - 데스크톱: 카드 오른쪽, 모바일: 카드 아래 */}
         <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden lg:block pointer-events-none">
           <Penguin size="xl" variant={3} lookLeft={true} showGift={false} />
         </div>
@@ -73,6 +73,11 @@ export default function Home() {
               </p>
             </div>
           )}
+
+          {/* 모바일에서 펭귄 표시 (버튼 위) */}
+          <div className="flex justify-center lg:hidden pointer-events-none -my-2">
+            <Penguin size="xl" variant={3} lookLeft={true} showGift={false} />
+          </div>
 
           <div className="mt-4 flex flex-wrap gap-3">
             {links.map((link) => (
