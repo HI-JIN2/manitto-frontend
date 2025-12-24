@@ -11,6 +11,7 @@ type ParticipantInput = {
 
 export default function CreatePartyPage() {
   const router = useRouter();
+  const maxParticipants = 30;
   const [name, setName] = useState("");
   const [hostName, setHostName] = useState("");
   const [hostEmail, setHostEmail] = useState("");
@@ -32,6 +33,10 @@ export default function CreatePartyPage() {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (participants.length > maxParticipants) {
+      setStatus(`이메일은 최대 ${maxParticipants}개까지 입력할 수 있어요.`);
+      return;
+    }
     setStatus(null);
     setLoading(true);
     try {
@@ -143,6 +148,11 @@ export default function CreatePartyPage() {
             예를 들어, <span className="font-mono">홍길동,hong@example.com</span> 처럼
             적어 주세요. 비워두면 방장만 포함된 파티가 만들어져요.
           </p>
+          {participants.length > maxParticipants && (
+            <p className="text-xs text-red-200">
+              이메일은 최대 {maxParticipants}개까지 입력할 수 있어요.
+            </p>
+          )}
           {participants.length > 0 && (
             <div className="rounded-lg border border-white/10 bg-surface-2 px-3 py-2 text-xs text-muted">
               전송 예정 {participants.length}명:{" "}
@@ -155,7 +165,7 @@ export default function CreatePartyPage() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || participants.length > maxParticipants}
           className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
         >
           {loading ? "생성 중..." : "파티 생성"}
@@ -170,4 +180,3 @@ export default function CreatePartyPage() {
     </main>
   );
 }
-
