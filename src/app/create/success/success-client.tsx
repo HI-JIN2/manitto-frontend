@@ -17,6 +17,7 @@ type Props = {
 
 export function CreateSuccessClient({ partyId, inviteCode, name }: Props) {
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
   const [stats, setStats] = useState<Stats | null>(null);
 
   const inviteLink = useMemo(
@@ -27,10 +28,25 @@ export function CreateSuccessClient({ partyId, inviteCode, name }: Props) {
     [inviteCode],
   );
 
-  const handleCopy = async () => {
-    const text = inviteLink || `파티 ID: ${partyId}, 초대코드: ${inviteCode}`;
+  const handleCopyLink = async () => {
+    if (!inviteLink) return;
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(inviteLink);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 1200);
+    } catch {
+      setLinkCopied(false);
+    }
+  };
+
+  const handleCopyMessage = async () => {
+    const message = `🎁 마니또 파티에 초대합니다!
+
+${inviteLink}
+
+✨ 회원가입 없이 링크를 눌러 마니또 파티에 참여해보세요!`;
+    try {
+      await navigator.clipboard.writeText(message);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     } catch {
@@ -73,22 +89,60 @@ export function CreateSuccessClient({ partyId, inviteCode, name }: Props) {
         </div>
         <div className="space-y-1 text-sm">
           <p className="text-muted">초대 링크 (게스트 모드)</p>
-          <p className="truncate font-mono text-foreground">
-            {inviteLink || "브라우저에서 확인 시 링크가 표시됩니다."}
-          </p>
+          <div className="flex items-center gap-1">
+            <p className="flex-1 truncate font-mono text-foreground">
+              {inviteLink || "브라우저에서 확인 시 링크가 표시됩니다."}
+            </p>
+            <button
+              onClick={handleCopyLink}
+              className="flex-shrink-0 rounded p-1 text-muted transition hover:bg-surface-2 hover:text-foreground"
+              title="링크만 복사"
+            >
+              {linkCopied ? (
+                <span className="text-sm">✓</span>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                  <path d="M4 16c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
         <div className="flex flex-wrap gap-3">
           <button
-            onClick={handleCopy}
+            onClick={handleCopyMessage}
             className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
           >
-            {copied ? "복사됨" : "초대 정보 복사"}
+            {copied ? "복사됨" : "복사하기"}
           </button>
+        </div>
+      </section>
+
+      <section className="space-y-3 rounded-2xl border-2 border-yellow-500/30 bg-yellow-500/5 px-6 py-6 shadow-xl shadow-black/20">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">⏳</span>
+            <h2 className="text-lg font-semibold text-foreground">아직 매칭 전이에요</h2>
+          </div>
+          <p className="text-sm text-muted">
+            참여자를 모두 추가한 뒤 파티 상태 페이지에서 매칭을 실행하세요.
+          </p>
           <Link
             href={`/party/invite/${inviteCode}`}
-            className="rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-muted transition hover:border-accent hover:text-accent"
+            className="inline-flex rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
           >
-            파티 상태 보러가기
+            파티 상태 보러가기 →
           </Link>
         </div>
       </section>

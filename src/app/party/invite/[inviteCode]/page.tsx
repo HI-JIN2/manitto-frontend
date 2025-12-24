@@ -24,6 +24,8 @@ export default function PartyStatusByInvitePage() {
   const [isMatched, setIsMatched] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -147,6 +149,36 @@ export default function PartyStatusByInvitePage() {
     }
   };
 
+  const inviteLink = typeof window !== "undefined" && inviteCode
+    ? `${window.location.origin}/join/${inviteCode}`
+    : "";
+
+  const handleCopyLink = async () => {
+    if (!inviteLink) return;
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 1200);
+    } catch {
+      setLinkCopied(false);
+    }
+  };
+
+  const handleCopyMessage = async () => {
+    const message = `🎁 마니또 파티에 초대합니다!
+
+${inviteLink}
+
+✨ 회원가입 없이 링크를 눌러 마니또 파티에 참여해보세요!`;
+    try {
+      await navigator.clipboard.writeText(message);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1200);
+    } catch {
+      setCopied(false);
+    }
+  };
+
   if (loading) {
     return (
       <main className="mx-auto flex min-h-screen max-w-3xl flex-col px-6 py-12">
@@ -238,6 +270,56 @@ export default function PartyStatusByInvitePage() {
           </button>
         </form>
       </section>
+
+      {inviteCode && (
+        <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
+          <h2 className="text-lg font-semibold">초대 링크</h2>
+          <div className="space-y-2 text-sm">
+            <div className="space-y-1">
+              <p className="text-muted">초대코드</p>
+              <p className="font-mono text-foreground">{inviteCode}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-muted">초대 링크</p>
+              <div className="flex items-center gap-1">
+                <p className="flex-1 truncate font-mono text-foreground text-xs">
+                  {inviteLink || "로딩 중..."}
+                </p>
+                <button
+                  onClick={handleCopyLink}
+                  className="flex-shrink-0 rounded p-1 text-muted transition hover:bg-surface-2 hover:text-foreground"
+                  title="링크만 복사"
+                >
+                  {linkCopied ? (
+                    <span className="text-sm">✓</span>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                      <path d="M4 16c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+            <button
+              onClick={handleCopyMessage}
+              className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
+            >
+              {copied ? "복사됨 ✓" : "복사하기"}
+            </button>
+          </div>
+        </section>
+      )}
 
       <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
         <h2 className="text-lg font-semibold">매칭 상태</h2>
