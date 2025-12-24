@@ -74,6 +74,14 @@ export default function RootLayout({
                   >
                     파티 상태
                   </a>
+                  <a
+                    className="rounded-full px-3 py-2 transition hover:text-foreground"
+                    href="https://forms.gle/5treLCiYW9wb3Mx58"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    의견 보내기
+                  </a>
                 </nav>
                 <div className="flex items-center gap-2 text-xs sm:text-[11px]">
                   <span className="hidden rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 font-semibold text-emerald-100 sm:inline">

@@ -67,7 +67,7 @@ export default function PartyStatusPage() {
     try {
       setMatching(true);
       await apiFetch(`/parties/${partyId}/match`, { method: "POST" });
-      setMessage("매칭 완료! 이메일이 발송되었을 수 있습니다.");
+      setMessage("페니가 마니또를 정해두었어요. 이메일을 확인해 보세요.");
       setIsMatched(true);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -168,7 +168,7 @@ ${inviteLink}
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">파티 상태</h1>
         <p className="text-sm text-muted">
-          참여자 목록을 확인하고 매칭을 실행하세요. 매칭 완료 후 재실행은 불가할 수 있습니다.
+          참여자 목록을 확인하고 매칭을 실행하세요. 페니가 조용히 도와줄 거예요.
         </p>
       </header>
 
@@ -247,13 +247,13 @@ ${inviteLink}
             </div>
             <div className="space-y-1">
               <p className="text-muted">초대 링크</p>
-              <div className="flex items-center gap-1">
-                <p className="flex-1 truncate font-mono text-foreground text-xs">
+              <div className="flex items-center gap-0">
+                <p className="flex-1 truncate font-mono text-foreground text-xs pr-0">
                   {inviteLink || "로딩 중..."}
                 </p>
                 <button
                   onClick={handleCopyLink}
-                  className="flex-shrink-0 rounded p-1 text-muted transition hover:bg-surface-2 hover:text-foreground"
+                  className="flex-shrink-0 rounded p-1 text-muted transition hover:bg-surface-2 hover:text-foreground -ml-1"
                   title="링크만 복사"
                 >
                   {linkCopied ? (
@@ -290,11 +290,14 @@ ${inviteLink}
       <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
         <h2 className="text-lg font-semibold">매칭 상태</h2>
         {isMatched ? (
-          <p className="text-sm text-green-300">🎁 매칭 완료된 파티입니다.</p>
+          <div className="space-y-2">
+            <p className="text-sm text-green-300">🎁 페니가 마니또를 정해두었어요.</p>
+            <p className="text-xs text-muted">이메일로 매칭 결과가 발송되었을 거예요.</p>
+          </div>
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-muted">
-              모든 파티원이 추가되었다면, 이제 매칭을 시작해 보세요.
+              모든 파티원이 추가되었다면, 이제 매칭을 시작해 보세요. 페니가 조용히 지켜보고 있어요.
             </p>
             <button
               onClick={handleMatch}

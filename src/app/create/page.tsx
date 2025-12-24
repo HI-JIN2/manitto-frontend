@@ -83,7 +83,7 @@ export default function CreatePartyPage() {
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">마니또 파티 만들기</h1>
         <p className="text-sm text-muted">
-          기본 게스트 모드: 호스트 이름/이메일로 파티를 만들고, 초대코드/참여 링크를 배포하세요.
+          페니가 도와줄 거예요. 호스트 이름/이메일로 파티를 만들고, 초대코드/참여 링크를 배포하세요.
         </p>
       </header>
 
@@ -128,7 +128,7 @@ export default function CreatePartyPage() {
 
         <div className="space-y-2">
           <label className="text-sm text-muted">
-            팀원 이름+이메일 일괄 입력 (선택)
+            친구들 이름+이메일 일괄 입력 (선택)
           </label>
           <textarea
             value={rawList}
@@ -138,8 +138,8 @@ export default function CreatePartyPage() {
             placeholder={`홍길동,hong@example.com\n김철수,chulsoo@example.com`}
           />
           <p className="text-xs text-muted">
-            팀원 이메일을 알고 있다면, 여기에서 미리 적어 둘 수 있어요.
-            한 줄에 사람 한 명씩, 「이름,이메일」 형식으로 입력하면 됩니다.
+            친구들 이메일을 알고 있다면, 여기에서 미리 적어 둘 수 있어요.
+            한 줄에 사람 한 명씩, 「이름,이메일」 형식으로 입력하면 됩니다. <br></br>
             예를 들어, <span className="font-mono">홍길동,hong@example.com</span> 처럼
             적어 주세요. 비워두면 방장만 포함된 파티가 만들어져요.
           </p>

@@ -19,7 +19,7 @@ export default function PartyStatusByCodeEntryPage() {
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">초대코드로 파티 상태 보기</h1>
         <p className="text-sm text-muted">
-          받은 초대코드를 입력하면 해당 파티의 상태 페이지로 이동합니다.
+          받은 초대코드를 입력하면 해당 파티의 상태 페이지로 이동해요. 페니가 기다리고 있어요.
         </p>
       </header>
 

@@ -89,7 +89,7 @@ export default function PartyStatusByInvitePage() {
     try {
       setMatching(true);
       await apiFetch(`/parties/${partyId}/match`, { method: "POST" });
-      setMessage("매칭 완료! 이메일을 확인해보세요.");
+      setMessage("페니가 마니또를 정해두었어요. 이메일을 확인해 보세요.");
       setIsMatched(true);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -202,7 +202,7 @@ ${inviteLink}
           파티 상태 · {partyName || "마니또 파티"}
         </h1>
         <p className="text-sm text-muted">
-          초대코드 기준으로 파티 상태를 확인합니다. 참여자 목록을 보고 매칭을 실행할 수 있습니다.
+          초대코드로 파티 상태를 확인해요. 설레는 마니또를 위해 페니가 도와줄게요.
         </p>
       </header>
 
@@ -218,7 +218,7 @@ ${inviteLink}
           </p>
         </div>
         {participants.length === 0 ? (
-          <p className="text-sm text-muted">아직 참가자가 없습니다.</p>
+          <p className="text-sm text-muted">아직 참가자가 없어요.</p>
         ) : (
           <ul className="space-y-2 text-sm">
             {participants.map((p) => (
@@ -274,11 +274,14 @@ ${inviteLink}
       <section className="space-y-3 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
         <h2 className="text-lg font-semibold">매칭 상태</h2>
         {isMatched ? (
-          <p className="text-sm text-green-300">🎁 매칭 완료된 파티입니다.</p>
+          <div className="space-y-2">
+            <p className="text-sm text-green-300">🎁 페니가 마니또를 정해두었어요.</p>
+            <p className="text-xs text-muted">이메일로 매칭 결과가 발송되었을 거예요.</p>
+          </div>
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-muted">
-              초대할 사람들을 모두 추가한 뒤, 매칭을 실행해 보세요.
+              초대할 사람들을 모두 추가한 뒤, 매칭을 실행해 보세요. 페니가 도와줄게요.
             </p>
             <button
               onClick={handleMatch}
@@ -306,13 +309,13 @@ ${inviteLink}
             </div>
             <div className="space-y-1">
               <p className="text-muted">초대 링크</p>
-              <div className="flex items-center gap-1">
-                <p className="flex-1 truncate font-mono text-foreground text-xs">
+              <div className="flex items-center gap-0">
+                <p className="flex-1 truncate font-mono text-foreground text-xs pr-0">
                   {inviteLink || "로딩 중..."}
                 </p>
                 <button
                   onClick={handleCopyLink}
-                  className="flex-shrink-0 rounded p-1 text-muted transition hover:bg-surface-2 hover:text-foreground"
+                  className="flex-shrink-0 rounded p-1 text-muted transition hover:bg-surface-2 hover:text-foreground -ml-1"
                   title="링크만 복사"
                 >
                   {linkCopied ? (

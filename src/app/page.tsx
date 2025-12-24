@@ -40,7 +40,7 @@ export default function Home() {
               <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
                 로그인 없이 1분 이면 
                 <br />
-                우리 팀만의 마니또 파티 만들기.
+                우리 팀만의 마니또 파티
               </h1>
             </div>
           <div className="max-w-3xl space-y-1 text-base text-muted sm:text-lg">
@@ -66,9 +66,11 @@ export default function Home() {
                 명의 사람들이 마니또 파티를 함께하고 있어요.
               </p>
               <p>              
-                조용하지만 따뜻한 파티,
-                지금 바로 시작해 보세요. 🎁
+                조용하지만 따뜻한 파티, 지금 바로 시작해 보세요. 🎁
                 </p>
+              <p className="text-xs text-muted mt-2">
+                — 페니 드림 🐧
+              </p>
             </div>
           )}
 

@@ -22,7 +22,7 @@ export default function JoinByInviteCodePage() {
         method: "POST",
         body: { name, email },
       });
-      setStatus("참여 완료 🎈");
+      setStatus("페니가 파티에 추가해뒀어요 🎈");
       setName("");
       setEmail("");
     } catch (err: unknown) {
@@ -41,8 +41,7 @@ export default function JoinByInviteCodePage() {
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">초대코드로 파티 참여</h1>
         <p className="text-sm text-muted">
-          초대 링크로 들어왔다면 코드가 자동 채워집니다. 이름/이메일을 입력하면
-          게스트로 참여합니다.
+          초대 링크로 들어왔다면 코드가 자동 채워져요. 이름/이메일을 입력하면 페니가 파티에 추가해줄 거예요.
         </p>
       </header>
 

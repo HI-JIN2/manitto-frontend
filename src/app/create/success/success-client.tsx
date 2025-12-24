@@ -21,6 +21,18 @@ export function CreateSuccessClient({ partyId, inviteCode, name }: Props) {
   const [linkCopied, setLinkCopied] = useState(false);
   const [stats, setStats] = useState<Stats | null>(null);
 
+  // 받침이 있는지 확인하는 헬퍼 함수
+  const hasBatchim = (text: string): boolean => {
+    if (!text) return false;
+    const lastChar = text[text.length - 1];
+    const code = lastChar.charCodeAt(0);
+    // 한글인 경우 받침 확인
+    if (code >= 0xac00 && code <= 0xd7a3) {
+      return (code - 0xac00) % 28 !== 0;
+    }
+    return false;
+  };
+
   const inviteLink = useMemo(
     () =>
       typeof window !== "undefined" && inviteCode
@@ -28,6 +40,10 @@ export function CreateSuccessClient({ partyId, inviteCode, name }: Props) {
         : "",
     [inviteCode],
   );
+
+  const partyName = name || "새 마니또 파티";
+  const particleEul = hasBatchim(partyName) ? "을" : "를";
+  const particleEun = hasBatchim(partyName) ? "은" : "는";
 
   const handleCopyLink = async () => {
     if (!inviteLink) return;
@@ -71,17 +87,17 @@ ${inviteLink}
         <header className="space-y-2">
           <p className="text-sm text-accent">파티 생성 완료</p>
           <h1 className="text-3xl font-semibold">
-            {name || "새 마니또 파티"}가 준비됐어요 🎁
+            페니가 {partyName}{particleEul} 준비해뒀어요 🎁
           </h1>
         <div className="space-y-1 text-sm text-muted">
-          <p>{name || "새 마니또 파티"}는 이 서비스에서 {partyId}번째로 생성된 마니또 파티예요.</p>
+          <p>{partyName}{particleEun} 이 서비스에서 {partyId}번째로 생성된 마니또 파티예요.</p>
           {stats && (
             <p>
               현재{" "}
               <span className="font-semibold text-foreground">
                 {stats.participantCount}
               </span>
-              명의 사람들이 마니또 파티를 사용하고 있어요.
+              명의 사람들이 마니또 파티를 함께하고 있어요.
             </p>
           )}
           <p>아래 초대 링크와 코드를 복사해서 팀원에게 전달하세요.</p>
@@ -96,13 +112,13 @@ ${inviteLink}
         </div>
         <div className="space-y-1 text-sm">
           <p className="text-muted">초대 링크 (게스트 모드)</p>
-          <div className="flex items-center gap-1">
-            <p className="flex-1 truncate font-mono text-foreground">
+          <div className="flex items-center gap-0">
+            <p className="flex-1 truncate font-mono text-foreground pr-0">
               {inviteLink || "브라우저에서 확인 시 링크가 표시됩니다."}
             </p>
             <button
               onClick={handleCopyLink}
-              className="flex-shrink-0 rounded p-1 text-muted transition hover:bg-surface-2 hover:text-foreground"
+              className="flex-shrink-0 rounded p-1 text-muted transition hover:bg-surface-2 hover:text-foreground -ml-1"
               title="링크만 복사"
             >
               {linkCopied ? (
@@ -143,7 +159,7 @@ ${inviteLink}
             <h2 className="text-lg font-semibold text-foreground">아직 매칭 전이에요</h2>
           </div>
           <p className="text-sm text-muted">
-            참여자를 모두 추가한 뒤 파티 상태 페이지에서 매칭을 실행하세요.
+            참여자를 모두 추가한 뒤 파티 상태 페이지에서 매칭을 실행하세요. 페니가 조용히 지켜보고 있어요.
           </p>
           <Link
             href={`/party/invite/${inviteCode}`}
