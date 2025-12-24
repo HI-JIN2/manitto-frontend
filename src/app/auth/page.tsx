@@ -11,12 +11,17 @@ export default function AuthPage() {
   const [dialogMessage, setDialogMessage] = useState<string | null>(null);
   const router = useRouter();
 
-  // 디버깅: Google Client ID 확인
+  // 디버깅: Google Client ID 및 Origin 확인
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  if (typeof window !== "undefined" && !googleClientId) {
-    console.warn("⚠️ NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set!");
-  } else if (typeof window !== "undefined") {
-    console.log("✅ Google Client ID loaded:", googleClientId?.substring(0, 20) + "...");
+  if (typeof window !== "undefined") {
+    if (!googleClientId) {
+      console.warn("⚠️ NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set!");
+    } else {
+      console.log("✅ Google Client ID loaded:", googleClientId?.substring(0, 20) + "...");
+    }
+    console.log("📍 Current Origin:", window.location.origin);
+    console.log("📍 Current URL:", window.location.href);
+    console.log("⚠️ 이 origin을 Google Cloud Console의 '승인된 JavaScript 원본'에 추가해야 합니다!");
   }
 
   // 현재 origin 기반 redirect_uri 생성
