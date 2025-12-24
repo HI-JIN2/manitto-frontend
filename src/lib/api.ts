@@ -19,8 +19,8 @@ export async function apiFetch<T>(
 
   const token = getToken();
 
-  // 프로덕션에서 HTTP 백엔드인 경우 Vercel rewrites 프록시 사용
-  const isProduction = process.env.NODE_ENV === "production";
+  // 프로덕션에서 HTTP 백엔드인 경우 Next.js API Route 프록시 사용
+  const isProduction = typeof window !== "undefined" && window.location.protocol === "https:";
   const useProxy = isProduction && baseUrl.startsWith("http://");
   const apiUrl = useProxy ? `/api${path}` : `${baseUrl}${path}`;
 
