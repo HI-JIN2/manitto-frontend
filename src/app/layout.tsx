@@ -80,7 +80,7 @@ export default function RootLayout({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    의견
+                    소리함
                   </a>
                 </nav>
                 <div className="flex items-center gap-2 text-xs sm:text-[11px]">
