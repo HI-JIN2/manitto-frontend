@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { apiFetch } from "@/lib/api";
+import { Penguin } from "@/components/Penguin";
 
 type Stats = {
   partyCount: number;
@@ -62,11 +63,16 @@ ${inviteLink}
 
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 px-6 py-12">
-      <header className="space-y-2">
-        <p className="text-sm text-accent">파티 생성 완료</p>
-        <h1 className="text-3xl font-semibold">
-          {name || "새 마니또 파티"}가 준비됐어요 🎁
-        </h1>
+      <div className="relative overflow-visible">
+        {/* 펭귄 캐릭터 - 카드 오른쪽에 자연스럽게 배치 (예시 이미지처럼) */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 z-10 hidden lg:block pointer-events-none">
+          <Penguin size="xl" variant={1} lookLeft={true} showGift={false} />
+        </div>
+        <header className="space-y-2">
+          <p className="text-sm text-accent">파티 생성 완료</p>
+          <h1 className="text-3xl font-semibold">
+            {name || "새 마니또 파티"}가 준비됐어요 🎁
+          </h1>
         <div className="space-y-1 text-sm text-muted">
           <p>{name || "새 마니또 파티"}는 이 서비스에서 {partyId}번째로 생성된 마니또 파티예요.</p>
           {stats && (
@@ -81,6 +87,7 @@ ${inviteLink}
           <p>아래 초대 링크와 코드를 복사해서 팀원에게 전달하세요.</p>
         </div>
       </header>
+      </div>
 
       <section className="space-y-4 rounded-2xl border border-white/10 bg-surface px-6 py-6 shadow-xl shadow-black/20">
         <div className="space-y-1 text-sm">

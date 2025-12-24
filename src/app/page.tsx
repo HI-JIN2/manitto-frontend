@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/lib/api";
+import { Penguin } from "@/components/Penguin";
 
 const links = [
   { href: "/create", label: "파티 생성 (게스트)" },
@@ -28,14 +29,20 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-surface to-surface-2 px-5 py-8 shadow-2xl shadow-black/40 sm:px-8 sm:py-10 md:px-10 md:py-12">
-        <div className="flex flex-col gap-4">
-          <p className="text-sm text-accent">마니또 파티</p>
-          <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
-            로그인 없이 1분 만에
-            <br />
-            우리 팀만의 마니또 파티 만들기.
-          </h1>
+      <div className="relative overflow-visible">
+        {/* 펭귄 캐릭터 - 카드 오른쪽에서 왼쪽으로 20px 이동 */}
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden lg:block pointer-events-none">
+          <Penguin size="xl" variant={3} lookLeft={true} showGift={false} />
+        </div>
+        <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-surface to-surface-2 px-5 py-8 shadow-2xl shadow-black/40 sm:px-8 sm:py-10 md:px-10 md:py-12">
+          <div className="flex flex-col gap-4">
+            <div className="flex-1">
+              <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
+                로그인 없이 1분 만에
+                <br />
+                우리 팀만의 마니또 파티 만들기.
+              </h1>
+            </div>
           <div className="max-w-3xl space-y-1 text-base text-muted sm:text-lg">
             <p>초간단 게스트 모드로 바로 시작하세요. 계정 없이도 파티를 만들 수 있어요.</p>
             <p>파티를 만든 뒤 초대 링크만 공유하면, 팀원들은 이름과 이메일만으로 참여합니다.</p>
@@ -74,6 +81,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

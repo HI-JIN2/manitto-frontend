@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Snow } from "@/components/Snow";
+import { Penguin } from "@/components/Penguin";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +36,17 @@ export default function RootLayout({
           <header className="border-b border-white/5 bg-surface/60 backdrop-blur">
             <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 gap-3">
               <Link href="/" className="flex items-center gap-2 font-semibold">
-                <div className="h-8 w-8 rounded-2xl bg-accent/20 ring-1 ring-accent/30 sm:h-9 sm:w-9" />
+                <div className="relative h-8 w-8 sm:h-9 sm:w-9">
+                  <Image
+                    src="/logo_penguin.png"
+                    alt="마니또 파티 로고"
+                    width={36}
+                    height={36}
+                    className="h-full w-full object-contain"
+                    priority
+                    unoptimized
+                  />
+                </div>
                 <p className="text-sm text-foreground sm:text-base">마니또 파티</p>
               </Link>
               <div className="flex items-center gap-3 sm:gap-4">
@@ -73,7 +85,7 @@ export default function RootLayout({
             </div>
           </header>
           <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
-            {children}
+        {children}
           </main>
           <footer className="border-t border-white/5 bg-surface/60 px-4 py-4 text-center text-[10px] text-muted sm:px-6 sm:py-6 sm:text-xs">
             © 2025 마니또 파티. All rights reserved.
