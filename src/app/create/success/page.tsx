@@ -11,9 +11,10 @@ type PageProps = {
 };
 
 export default function CreateSuccessPage({ searchParams }: PageProps) {
-  const partyId = searchParams.partyId ?? "";
-  const inviteCode = searchParams.inviteCode ?? "";
-  const name = searchParams.name ?? "";
+  // searchParams가 Promise인 경우 처리 (Next.js 15+)
+  const partyId = typeof searchParams.partyId === "string" ? searchParams.partyId : "";
+  const inviteCode = typeof searchParams.inviteCode === "string" ? searchParams.inviteCode : "";
+  const name = typeof searchParams.name === "string" ? searchParams.name : "";
 
   if (!partyId) {
     return (

@@ -38,6 +38,7 @@ export default function CreatePartyPage() {
       const res = await apiFetch<{
         id: number;
         inviteCode: string;
+        name?: string;
       }>("/parties/guest", {
         method: "POST",
         body: {
@@ -48,13 +49,24 @@ export default function CreatePartyPage() {
         },
       });
 
+      // 디버깅: 응답 확인
+      console.log("Party created:", res);
+      console.log("Party ID:", res.id);
+      console.log("Invite Code:", res.inviteCode);
+
+      if (!res.id || !res.inviteCode) {
+        throw new Error("파티 생성 응답에 필수 정보가 없습니다.");
+      }
+
       const search = new URLSearchParams({
         partyId: String(res.id),
-        inviteCode: res.inviteCode ?? "",
-        name,
+        inviteCode: res.inviteCode,
+        name: res.name || name,
       });
 
-      router.push(`/create/success?${search.toString()}`);
+      const url = `/create/success?${search.toString()}`;
+      console.log("Redirecting to:", url);
+      router.push(url);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setStatus(err.message);
