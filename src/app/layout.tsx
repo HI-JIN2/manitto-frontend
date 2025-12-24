@@ -19,6 +19,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "마니또 파티",
   description: "친구, 동료와 함께하는 비밀친구 추첨 서비스",
+  icons: {
+    icon: "/logo_penguin.png",
+    shortcut: "/logo_penguin.png",
+    apple: "/logo_penguin.png",
+  },
 };
 
 export default function RootLayout({
