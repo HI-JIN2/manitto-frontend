@@ -8,7 +8,6 @@ const links = [
   { href: "/create", label: "파티 생성 (게스트)" },
   { href: "/join", label: "초대코드로 참여" },
   { href: "/party/invite", label: "초대코드로 파티 상태 보기" },
-  { href: "/match-result", label: "매칭 결과" },
 ];
 
 type Stats = {
