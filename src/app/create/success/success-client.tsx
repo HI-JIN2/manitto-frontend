@@ -57,11 +57,17 @@ export function CreateSuccessClient({ partyId, inviteCode, name }: Props) {
   };
 
   const handleCopyMessage = async () => {
-    const message = `🎁 마니또 파티에 초대합니다!
+    const message = `🎁 마니또 파티에 초대해요!
 
-${inviteLink}
+아래 링크를 눌러서  
+회원가입 없이 바로 마니또 파티에 참여할 수 있어요.
 
-✨ 회원가입 없이 링크를 눌러 마니또 파티에 참여해보세요!`;
+👉 ${inviteLink}
+
+이름과 이메일만 입력하면 끝이에요.  
+부담 없이 들어와서 같이 파티 즐겨주세요 🙂
+
+— 페니 🐧`;
     try {
       await navigator.clipboard.writeText(message);
       setCopied(true);
@@ -142,13 +148,18 @@ ${inviteLink}
             </button>
           </div>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={handleCopyMessage}
-            className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
-          >
-            {copied ? "복사됨" : "복사하기"}
-          </button>
+        <div className="space-y-2">
+          <p className="text-xs text-muted">
+            링크를 복사해서 단톡방에 툭 보내주세요.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={handleCopyMessage}
+              className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
+            >
+              {copied ? "복사됨" : "복사하기"}
+            </button>
+          </div>
         </div>
       </section>
 
