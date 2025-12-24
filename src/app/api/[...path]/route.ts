@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
+// 서버 사이드에서만 사용할 환경변수 (NEXT_PUBLIC_ 없이)
+const BACKEND_URL = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
 
 export async function GET(
   request: NextRequest,
@@ -32,7 +33,19 @@ async function proxyRequest(
   method: string,
 ) {
   const path = pathSegments.join("/");
-  const url = new URL(`${BACKEND_URL}/${path}`);
+  
+  // BACKEND_URL 구성
+  // NEXT_PUBLIC_API_BASE_URL이 이미 /api를 포함할 수 있음
+  let backendBase = BACKEND_URL;
+  if (!backendBase.endsWith("/api") && !backendBase.endsWith("/api/")) {
+    backendBase = backendBase.endsWith("/") 
+      ? `${backendBase}api` 
+      : `${backendBase}/api`;
+  }
+  
+  // 경로가 /로 시작하면 제거
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+  const url = new URL(`${backendBase}/${cleanPath}`);
   
   // 쿼리 파라미터 복사
   request.nextUrl.searchParams.forEach((value, key) => {
@@ -59,6 +72,7 @@ async function proxyRequest(
   }
 
   try {
+    console.log(`[Proxy] ${method} ${url.toString()}`);
     const res = await fetch(url.toString(), {
       method,
       headers,
@@ -71,6 +85,12 @@ async function proxyRequest(
       statusText: res.statusText,
     });
 
+    // Content-Type 헤더 복사
+    const contentType = res.headers.get("Content-Type");
+    if (contentType) {
+      response.headers.set("Content-Type", contentType);
+    }
+
     // CORS 헤더 복사
     res.headers.forEach((value, key) => {
       if (key.toLowerCase().startsWith("access-control-")) {
@@ -80,9 +100,11 @@ async function proxyRequest(
 
     return response;
   } catch (error) {
-    console.error("Proxy error:", error);
+    console.error("[Proxy] Error:", error);
+    console.error("[Proxy] Backend URL:", BACKEND_URL);
+    console.error("[Proxy] Path:", path);
     return NextResponse.json(
-      { error: "백엔드 서버에 연결할 수 없습니다." },
+      { error: `백엔드 서버에 연결할 수 없습니다: ${error instanceof Error ? error.message : String(error)}` },
       { status: 502 },
     );
   }
