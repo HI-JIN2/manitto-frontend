@@ -101,7 +101,18 @@ export default function RootLayout({
         {children}
           </main>
           <footer className="border-t border-white/5 bg-surface/60 px-4 py-4 text-center text-[10px] text-muted sm:px-6 sm:py-6 sm:text-xs">
-            © 2025 마니또 파티. All rights reserved.
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-3 text-[10px] text-muted sm:text-xs">
+                <Link className="transition hover:text-foreground" href="/privacy">
+                  개인정보처리방침
+                </Link>
+                <span className="text-white/10">|</span>
+                <Link className="transition hover:text-foreground" href="/terms">
+                  이용약관
+                </Link>
+              </div>
+              <p>© 2025 마니또 파티. All rights reserved.</p>
+            </div>
           </footer>
         </div>
       </body>
